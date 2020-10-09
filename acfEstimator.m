@@ -30,7 +30,9 @@ function estimate = acfEstimator(data, globals)
     obj = @(theta) objectiveFun(theta, phiPrev, phiCurr,...
                                         lPrev, lCurr, kPrev, kCurr);
 
-    estimate = fminsearch(obj, [globals.betaL globals.betaK]);
+    % in extreme cases this may not converge fast enough (increase MaxFunEvals)
+    options = optimset('MaxFunEvals', 1000);
+    estimate = fminsearch(obj, [globals.betaL globals.betaK], options);
 end
 
 function obj = objectiveFun(theta, phiPrev, phiCurr, ...

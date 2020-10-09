@@ -2,18 +2,28 @@
 % modifier in matlab is strongly discouraged, and matlab doesn't have very
 % flexible scoping. instead, we pass parameters between function calls,
 % sort of like an environment in R.
-function globals = initGlobals(varargin)
+function globals = initGlobals(dgp, measureError)
     
     globals = struct();
-    if nargin > 0 
-        dgp = varargin{1};
-        if ischar(dgp)
-            dgp = str2num(dgp);
-        end
-        globals = setDGP(dgp, globals); 
-    else 
-        globals = setDGP(1, globals); %run DGP 1 by default
+    
+    % set DGP-specific vars
+    globals.dgp = dgp;
+    switch dgp
+        case 1
+            globals.sigmaLogWage = 0.1;
+            globals.timeB = 0.5;
+            globals.sigmaOptimErrL = 0.;
+        case 2
+            globals.sigmaLogWage = 0.;
+            globals.timeB = 0.;
+            globals.sigmaOptimErrL = 0.37;
+        case 3
+            globals.sigmaLogWage = 0.1;
+            globals.timeB = 0.5; 
+            globals.sigmaOptimErrL = 0.37;
     end
+    
+    globals.measureError = measureError;
     
     % the simulation size. in testing found that it takes ~nperiodsTotal
     % periods to achieve a steady state, of which we will take the last
@@ -50,23 +60,4 @@ function globals = initGlobals(varargin)
     globals.sigmaXiOmega = sqrt((1-globals.rhoOmega^2)*globals.sigmaOmega^2);
     globals.sigmaXiOmega1 = sqrt((1-globals.rhoOmega1^2)*globals.sigmaOmega^2);
     globals.sigmaXiOmega2 = sqrt((1-globals.rhoOmega2^2)*globals.sigmaOmega^2);
-end
-
-% these are global variables that depend on the DGP we're using
-function globals = setDGP(dgp, globals)
-    globals.dgp = dgp;
-    switch dgp
-        case 1
-            globals.sigmaLogWage = 0.1;
-            globals.timeB = 0.5;
-            globals.sigmaOptimErrL = 0.;
-        case 2
-            globals.sigmaLogWage = 0.;
-            globals.timeB = 0.;
-            globals.sigmaOptimErrL = 0.37;
-        case 3
-            globals.sigmaLogWage = 0.1;
-            globals.timeB = 0.5; 
-            globals.sigmaOptimErrL = 0.37;
-    end
 end
