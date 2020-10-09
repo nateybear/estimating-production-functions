@@ -11,8 +11,8 @@ Clone this repository and open the `main.m` script. Run main with the desired da
 # TODOs
 
 1. ACF estimator looks incorrect for non-zero amounts of measurement error.
-..* Verify that measurement error is being generated correctly (particularly the *proportional to within variance* part)
-..* Verify that investment is being generated correctly
-..* Revist ACF estimation code. This seems fine.
+  * Verify that measurement error is being generated correctly (particularly the *proportional to within variance* part)
+  * Verify that investment is being generated correctly
+  * Revist ACF estimation code. This seems fine.
 
 2. Add LP and OP estimation
