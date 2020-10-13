@@ -22,20 +22,20 @@ function main(varargin)
             dataPipeline = pipe(@generateExogenousShocks, @generateWages,...
                     @calculateInvestmentDemand, @calculateLaborDemand, ...
                     @generateIntermediateInputDemand, @calculateFirmOutput, ...
-                    @keepLastN, @addMeasureError);
+                    @keepLastN, @generateMeasureError);
 
             % keep track of timings for each run
             [generateData, reportGenerateData] = timed("generating data", dataPipeline, globals.niterations);  
-            [estimateACF, reportEstimateACF] = timed("estimating ACF", @acfEstimator, globals.niterations);
+            [acfEstimator, reportEstimateACF] = timed("estimating ACF", @estimateACF, globals.niterations);
 
             % show progress bar. you can close it and it will keep running.
-            runNumber = (idgp-1) * length(imErr) + imErr;
+            runNumber = (idgp-1) * length(inp.MeasureError) + imErr;
             progressBar = waitbar(0, sprintf("Running simulation (%d/%d)...", runNumber, totalRuns));
 
             % the actual Monte Carlo---generate data and estimate in a loop
             for iiteration = 1:globals.niterations
                 data = generateData(data, globals);
-                betaACF(iiteration, :) = estimateACF(data, globals);
+                betaACF(iiteration, :) = acfEstimator(data, globals);
                 if isvalid(progressBar)
                     waitbar(iiteration/globals.niterations, progressBar);
                 end
@@ -55,8 +55,8 @@ function main(varargin)
             fprintf('Wrote estimates to %s\n\n', filename);
             meanEstimate = mean(betaACF, 1);
             sdEstimate = std(betaACF, 1);
-            fprintf('Estimate betaL: %.4f (%.4f)', meanEstimate(1), sdEstimate(1));
-            fprintf('Estimate betaK: %.4f (%.4f)', meanEstimate(2), sdEstimate(2));
+            fprintf('Estimate betaL: %.4f (%.4f)\n', meanEstimate(1), sdEstimate(1));
+            fprintf('Estimate betaK: %.4f (%.4f)\n', meanEstimate(2), sdEstimate(2));
         end
     end
 end
