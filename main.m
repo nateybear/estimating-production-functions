@@ -22,7 +22,7 @@ function main(varargin)
             dataPipeline = pipe(@generateExogenousShocks, @generateWages,...
                     @calculateInvestmentDemand, @calculateLaborDemand, ...
                     @generateIntermediateInputDemand, @calculateFirmOutput, ...
-                    @addMeasureError, @keepLastN);
+                    @keepLastN, @addMeasureError);
 
             % keep track of timings for each run
             [generateData, reportGenerateData] = timed("generating data", dataPipeline, globals.niterations);  
@@ -52,7 +52,11 @@ function main(varargin)
             % save estimates to disk
             filename = sprintf('ACF_DGP%02d_Err%0.1f_%s.mat', dgp, measureError, date);
             save(filename, 'betaACF');
-            fprintf('Wrote estimates to %s\n', filename);
+            fprintf('Wrote estimates to %s\n\n', filename);
+            meanEstimate = mean(betaACF, 1);
+            sdEstimate = std(betaACF, 1);
+            fprintf('Estimate betaL: %.4f (%.4f)', meanEstimate(1), sdEstimate(1));
+            fprintf('Estimate betaK: %.4f (%.4f)', meanEstimate(2), sdEstimate(2));
         end
     end
 end

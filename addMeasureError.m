@@ -1,4 +1,5 @@
 function data = addMeasureError(data, globals)
-    withinstd = std(data.lnIntermedInput, 1); % columns index time period...
-    data.lnIntermedInput = data.lnIntermedInput + globals.measureError * withinstd .* randn(size(data.lnIntermedInput));
+    groupMeans = mean(data.lnIntermedInput, 1);
+    withinvar = var((data.lnIntermedInput - groupMeans), 0, 'all');
+    data.lnIntermedInput = data.lnIntermedInput + globals.measureError * sqrt(withinvar) * randn(size(data.lnIntermedInput));
 end
