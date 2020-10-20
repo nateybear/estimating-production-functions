@@ -1,3 +1,10 @@
+% couple the various things that we want to do with estimators, namely run them,
+% report how long they took to run, and save the estimates to disk. this is not the
+% most elegant POC (I blame MATLAB's arbitrary distinction between arrays and cell
+% arrays and ill-founded distate for heterogeneity). Given a cell array of strings
+% corresponding to estimation methods and an integer representing the number of
+% Monte Carlo iterations to do, return a three-tuple: run the estimation for a given
+% iteration, report how long it took at the end, and save the estiamtes to disk.
 function [ runEstimates, reportEstimates, saveEstimates ] = makeEstimators(estimationMethods, size)
     if ischar(estimationMethods)
         estimationMethods = { estimationMethods };

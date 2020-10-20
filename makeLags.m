@@ -1,3 +1,6 @@
+% this is used in a few places, so extract into its own function. given MC data,
+% return a two-tuple of functions to conveniently extract either lagged or current
+% observations with either a string or data matrix.
 function [ p, c ] = makeLags(data)
     p = @(X) prev(X, data);
     c = @(X) curr(X, data);

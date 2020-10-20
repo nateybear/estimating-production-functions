@@ -1,6 +1,6 @@
-% run from command window as "main" to run all Monte Carlo scenarios, or 
-% main('DGP', 1, 'MeasureError', 0.1) for a specific scenario. The DGP and
-% MeasureError arguments can be row vectors if you want to run multiple scenarios.
+% Optional arguments are the DGP to run (as a scalar int or row vector), measurement
+% error (as a scalar double or row vector), and estimation method to use (as a scalar
+% string or cell array of strings). See the parseInput function for defaults.
 function main(varargin)
     rng(239482398);
     
@@ -9,9 +9,9 @@ function main(varargin)
     totalRuns = length(inp.DGP) * length(inp.MeasureError);
     
     for idgp = 1:length(inp.DGP)
-        dgp = inp.DGP(idgp);
+        dgp = inp.DGP(idgp); % current DGP
         for imErr = 1:length(inp.MeasureError)
-            measureError = inp.MeasureError(imErr);
+            measureError = inp.MeasureError(imErr); % current measureError
             
             % init data structures
             globals = initGlobals(dgp, measureError);
@@ -40,6 +40,7 @@ function main(varargin)
                 end
             end
 
+            % close the progressBar (stupid you have to always check isvalid)
             if isvalid(progressBar)
                 close(progressBar);
             end
