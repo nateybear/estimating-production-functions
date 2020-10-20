@@ -7,8 +7,9 @@ This code is a series of Monte Carlo trials to verify the robustness of the esti
 # How to run
 
 Clone this repository and open the `main.m` script. Run main with the desired data-generating process (1, 2, or 3) and the desired amount of measurement error. Estimates will be written in the same directory as `main.m` with a separate .mat file for each estimation technique and scenario. All arguments are optional, see defaults defined in `main.m`. Here is an example call:
-
-`main('DGP', 1, 'MeasureError', [0.0 0.1]) % arguments can be scalars or row vectors` 
+```matlab
+main('DGP', 1, 'MeasureError', [0.0 0.1], 'Estimator', 'LP') % arguments can be scalars or row vectors (1xn cell arrays for char)
+```
 
 ## TODOs (a.k.a. this code is not 100% correct yet)
 
