@@ -13,5 +13,5 @@ main('DGP', 1, 'MeasureError', [0.0 0.1], 'Estimator', 'LP') % arguments can be 
 
 ## TODOs (a.k.a. this code is not 100% correct yet)
 
-1. Add LP and OP estimation
-2. Extensions (investment shocks)
+1. Add OP estimation
+2. Extension (capital accumulation shocks)
