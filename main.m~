@@ -62,9 +62,13 @@ function main(varargin)
                 data = generateData(data, globals);
                 
                 for iEstimator = 1:nEstimators
-                    % if doing OP estimation, add error to invesetment, o.w. add it
-                    % to intermed input
-                    addMeasureError = ifelse(strcmp(estimatorNames{iEstimator}, 'OP'), addInvestmentError, addIntermedInputError);
+                    
+                    if strcmp(estimatorNames{iEstimator}, 'OP')
+                        addMeasureError = addInvestmentError;
+                    else
+                        addMeasureError = addIntermedInputError;
+                    end
+                    
                     estimates{iEstimator}(iiteration, :) = estimators{iEstimator}(addMeasureError(data, globals), globals);
                 end
                 

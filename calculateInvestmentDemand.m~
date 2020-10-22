@@ -3,8 +3,6 @@ function data = calculateInvestmentDemand(data, globals)
     % these are 1/phi_i for each firm
     adjustmentTerm = exp(globals.sigmaPhi * randn(1, globals.nfirms));
     
-    
-    % different parts of the analytical solution to investment problem
     squareBracketTerm = (globals.betaL^(globals.betaL/(1-globals.betaL))) * ...
         exp(0.5 * globals.betaL^2 * globals.sigmaOptimErrL^2) - ...
         (globals.betaL^(1/(1-globals.betaL))) * exp(0.5 * globals.sigmaOptimErrL^2);
@@ -30,15 +28,14 @@ function data = calculateInvestmentDemand(data, globals)
     for period=2:globals.nperiodsTotal
         % increment capital
         data.lnKapital(period, :) = log((1-globals.deprecRate) * ...
-            exp(data.lnKapital(period-1, :)) + exp(data.lnInvestment(period-1, :)));
-        
+            exp(data.lnKapital(period-1, :)) + data.investment(period - 1, :));
         
         expterm1 = exp((1/(1-globals.betaL)) * globals.rhoOmega.^(1:101).' * ...
             data.omegaT(period, :));
         expterm2 = exp(-globals.betaL/(1-globals.betaL) * globals.rhoWage.^(1:101).' * ...
             data.lnWage(period,:));
         
-        data.lnInvestment(period, :) = log(adjustmentTerm * const1 * expterm5 .* ...
-            sum(vec1 .* expterm1 .* expterm2 .* expterm3 .* expterm4, 1));
+        data.investment = adjustmentTerm * const1 * expterm5 .* ...
+            sum(vec1 .* expterm1 .* expterm2 .* expterm3 .* expterm4, 1);
     end
 end
