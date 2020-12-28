@@ -10,8 +10,3 @@ Clone this repository and open the `main.m` script. Run main with the desired da
 ```matlab
 main('DGP', 1, 'MeasureError', [0.0 0.1], 'Estimator', 'LP') % arguments can be scalars or row vectors (1xn cell arrays for char)
 ```
-
-## TODOs (a.k.a. this code is not 100% correct yet)
-
-1. Add OP estimation
-2. Extension (capital accumulation shocks)
