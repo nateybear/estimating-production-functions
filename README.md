@@ -1,12 +1,21 @@
-# Monte Carlo Experiments with ACF Estimator
+# Identification Properties of Recent Production Function Estimators
 
-This is a transcription of the ACF estimation technique from GAUSS into MATLAB. For the original GAUSS code, see the supplemental materials on the [Econometric Society website](https://www.econometricsociety.org/publications/econometrica/2015/11/01/identification-properties-recent-production-function-estimators).
-
-This code is a series of Monte Carlo trials to verify the robustness of the estimator proposed by Ackerberg, Caves, and Frazer in "Identification Properties of Recent Production Function Estimators." Specifically, it imposes various amounts of optimization error in labor demand and measurement error in intermediate input demand and compares the ACF estimator with those given by [Pakes and Olley](https://www.econometricsociety.org/publications/econometrica/1996/11/01/dynamics-productivity-telecommunications-equipment-industry) and [Levinsohn and Petrin](https://econpapers.repec.org/article/ouprestud/v_3a70_3ay_3a2003_3ai_3a2_3ap_3a317-341.htm) to estimate production in the presence of serially correlated, unobserved shocks.
+This is a transcription of the GAUSS code written for Ackerberg, Caves and Frazer (2015) into MATLAB. The original code is available at the [Econometric Society website](https://www.econometricsociety.org/publications/econometrica/2015/11/01/identification-properties-recent-production-function-estimators). It runs a series of Monte Carlo trials that compare the Ackerberg-Caves-Frazer, Levinsohn-Petrin, and Olley-Pakes production function estimators.
 
 # How to run
+## main.m
+Run the `main.m` function. The `main.m` function will save the outcome of each Monte Carlo run in a separate .mat file. Each .mat file contains a single variable, beta, which is an nx2 matrix with estimates of the coefficient on labor in the first column and capital in the second column.
 
-Clone this repository and open the `main.m` script. Run main with the desired data-generating process (1, 2, or 3), the desired amount of measurement error, and the estimator to use. All arguments are optional, see defaults defined in `main.m` (default is to run all scenarios over all estimators). Estimates will be written in the same directory as `main.m` with a separate .mat file for each estimation technique and scenario. Here is an example call:
+Optionally, you can use the following parameters to control the trials that are run:
+* `DGP`: The particular data-generating process to use from the ACF paper (1, 2, or 3). Can be specified as a single integer or as a vector of DGPs to run. Default is `[1 2 3]`.
+
+* `MeasureError`: The standard deviation of the investment/intermediate input shocks used in the DGPs. Specified as either a single number or a vector of numbers. Default is `[0.0 0.1 0.2 0.5]`.
+
+* `Estimator`: Which estimation technique to use (ACF, LP, or OP). Can be a string or a cell array of strings. Default is `{ 'ACF' 'LP' 'OP' }`
+
+Here is an example call:
 ```matlab
-main('DGP', 1, 'MeasureError', [0.0 0.1], 'Estimator', 'LP') % arguments can be scalars or row vectors (1xn cell arrays for char)
+main('DGP', 1, 'MeasureError', [0.0 0.1], 'Estimator', 'LP')
 ```
+## initGlobals.m
+Note that all of the parameters for the simulation are set in `initGlobals.m`. In particular, you may want to adjust `globals.niterations` if you wish to run a smaller Monte Carlo sample for testing purposes.
